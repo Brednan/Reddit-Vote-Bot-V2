@@ -23,4 +23,24 @@ class Account(Session):
         soup = BeautifulSoup(login_page.content, 'html.parser')
 
         csrf_token = soup.find('input', {'name': 'csrf_token'})['value']
-        print(csrf_token)
+
+        form = {
+            'csrf_token': csrf_token,
+            'password': self.password,
+            'dest': 'https://www.reddit.com',
+            'username': self.username
+        }
+
+        res = self.post('https://www.reddit.com/login', timeout=5, data=form)
+
+        res_json = res.json()
+
+        try:
+            if res_json['dest']:
+                print('success')
+
+            else:
+                print('failed')
+
+        except KeyError:
+            print('failed')
