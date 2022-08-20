@@ -5,10 +5,17 @@ from os import environ
 
 class Account(Session):
     def __init__(self, username, password):
+        self.SUCCESS = 1
+        self.FAILED = 0
+
         Session.__init__(self)
 
         iproyal_username = environ['ip_royal_username']
         iproyal_password = environ['ip_royal_password']
+
+        self.headers.update({
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.102 Safari/537.36'
+        })
 
         # self.proxies = {
         #     'http': f'http://{iproyal_username}:{iproyal_password}@geo.iproyal.com:22323',
@@ -37,10 +44,10 @@ class Account(Session):
 
         try:
             if res_json['dest']:
-                print('success')
+                return self.SUCCESS
 
             else:
-                print('failed')
+                return self.FAILED
 
         except KeyError:
-            print('failed')
+            return self.FAILED
