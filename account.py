@@ -40,18 +40,18 @@ class Account(Session):
 
         res = self.post('https://www.reddit.com/login', timeout=5, data=form)
 
-        res_cookies = res.cookies
-
-        loid = res_cookies.get('loid')
-
-        self.headers.update({
-            'x-reddit-loid': loid
-        })
-
         res_json = res.json()
 
         try:
             if res_json['dest']:
+                res_cookies = res.cookies
+
+                loid = res_cookies.get('loid')
+
+                self.headers.update({
+                    'x-reddit-loid': loid
+                })
+
                 return self.SUCCESS
 
             else:
@@ -62,7 +62,6 @@ class Account(Session):
 
     def vote(self, comment_id, url):
         self.headers.update({
-            'authority': 'oauth.reddit.com',
             'access-control-request-headers': 'authorization,x-reddit-loid,x-reddit-session',
             'access-control-request-method': 'POST'
         })
