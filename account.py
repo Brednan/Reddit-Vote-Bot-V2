@@ -40,6 +40,14 @@ class Account(Session):
 
         res = self.post('https://www.reddit.com/login', timeout=5, data=form)
 
+        res_cookies = res.cookies
+
+        loid = res_cookies.get('loid')
+
+        self.headers.update({
+            'x-reddit-loid': loid
+        })
+
         res_json = res.json()
 
         try:
@@ -51,3 +59,14 @@ class Account(Session):
 
         except KeyError:
             return self.FAILED
+
+    def vote(self, comment_id, url):
+        self.headers.update({
+            'authority': 'oauth.reddit.com',
+            'access-control-request-headers': 'authorization,x-reddit-loid,x-reddit-session',
+            'access-control-request-method': 'POST'
+        })
+
+        vote_api_url = 'https://oauth.reddit.com/api/vote?redditWebClient=desktop2x&app=desktop2x-client-production&raw_json=1&gilding_detail=1'
+
+        vote_options = self.options(vote_api_url, timeout=5)
