@@ -69,3 +69,15 @@ class Account(Session):
         vote_api_url = 'https://oauth.reddit.com/api/vote?redditWebClient=desktop2x&app=desktop2x-client-production&raw_json=1&gilding_detail=1'
 
         vote_options = self.options(vote_api_url, timeout=5)
+
+        x_reddit_session = vote_options.headers.get('x-reddit-session')
+
+        page_content = self.get('https://www.reddit.com', timeout=5).content
+
+        page_soup = BeautifulSoup(page_content, 'html.parser')
+
+        script = page_soup.find('script', {'id': 'data'})
+        print(script.text)
+
+        # with open('./test.html', 'w', encoding='utf-8') as f:
+        #     f.write(page_soup.prettify())
