@@ -1,6 +1,7 @@
 from requests import Session
 from bs4 import BeautifulSoup
 from os import environ
+import json
 
 
 class Account(Session):
@@ -76,8 +77,10 @@ class Account(Session):
 
         page_soup = BeautifulSoup(page_content, 'html.parser')
 
-        script = page_soup.find('script', {'id': 'data'})
-        print(script.text)
+        script_content = page_soup.find('script', {'id': 'data'}).string
 
-        # with open('./test.html', 'w', encoding='utf-8') as f:
-        #     f.write(page_soup.prettify())
+        js_object_raw = script_content[14: len(script_content) - 1]
+
+        json_data = json.loads(js_object_raw)
+
+        access_token = json_data['user']['session']['accessToken']
