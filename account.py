@@ -61,17 +61,19 @@ class Account(Session):
         except KeyError:
             return self.FAILED
 
-    def vote(self, comment_id, url):
+    def vote(self, comment_id):
+        payload = {
+            'id': {comment_id},
+            'dir': 1,
+            'api_type': 'json'
+        }
+
         self.headers.update({
             'access-control-request-headers': 'authorization,x-reddit-loid,x-reddit-session',
             'access-control-request-method': 'POST'
         })
 
         vote_api_url = 'https://oauth.reddit.com/api/vote?redditWebClient=desktop2x&app=desktop2x-client-production&raw_json=1&gilding_detail=1'
-
-        vote_options = self.options(vote_api_url, timeout=5)
-
-        x_reddit_session = vote_options.headers.get('x-reddit-session')
 
         page_content = self.get('https://www.reddit.com', timeout=5).content
 
@@ -84,3 +86,9 @@ class Account(Session):
         json_data = json.loads(js_object_raw)
 
         access_token = json_data['user']['session']['accessToken']
+
+        self.headers.update({
+            'authorization': f'Bearer {access_token}'
+        })
+
+        res = self.post(vote_api_url, timeout=5, data=payload)
