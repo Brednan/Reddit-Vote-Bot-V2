@@ -10,6 +10,7 @@ if __name__ == '__main__':
 
     combos_path = input('Insert path to combo list file: ')
     post_id = input('Insert the id of the post you would like to vote: ')
+    vote_option = int(input('Specify the vote option: '))
 
     combos = Combos()
     combos.parse_combos(combos_path)
@@ -27,7 +28,7 @@ if __name__ == '__main__':
                     login_res = account.login()
 
                     if login_res == 1:
-                        vote_res = account.vote(post_id)
+                        vote_res = account.vote(post_id, vote_option)
 
                         if vote_res == 1:
                             combos.update_success()

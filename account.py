@@ -61,10 +61,10 @@ class Account(Session):
         except KeyError:
             return self.FAILED
 
-    def vote(self, comment_id):
+    def vote(self, comment_id, vote_option):
         payload = {
             'id': {comment_id},
-            'dir': -1,
+            'dir': vote_option,
             'api_type': 'json'
         }
 
