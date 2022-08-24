@@ -18,10 +18,10 @@ class Account(Session):
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.102 Safari/537.36'
         })
 
-        # self.proxies = {
-        #     'http': f'http://{iproyal_username}:{iproyal_password}@geo.iproyal.com:22323',
-        #     'https': f'http://{iproyal_username}:{iproyal_password}@geo.iproyal.com:22323'
-        # }
+        self.proxies = {
+            'http': f'http://{iproyal_username}:{iproyal_password}@geo.iproyal.com:22323',
+            'https': f'http://{iproyal_username}:{iproyal_password}@geo.iproyal.com:22323'
+        }
 
         self.username = username
         self.password = password
@@ -64,7 +64,7 @@ class Account(Session):
     def vote(self, comment_id):
         payload = {
             'id': {comment_id},
-            'dir': 1,
+            'dir': -1,
             'api_type': 'json'
         }
 
@@ -92,3 +92,9 @@ class Account(Session):
         })
 
         res = self.post(vote_api_url, timeout=5, data=payload)
+
+        if res.status_code == 200:
+            return self.SUCCESS
+
+        else:
+            return self.FAILED
