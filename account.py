@@ -27,7 +27,7 @@ class Account(Session):
         self.password = password
 
     def login(self):
-        login_page = self.get('https://www.reddit.com/login/')
+        login_page = self.get('https://www.reddit.com/login/', timeout=5)
         soup = BeautifulSoup(login_page.content, 'html.parser')
 
         csrf_token = soup.find('input', {'name': 'csrf_token'})['value']
