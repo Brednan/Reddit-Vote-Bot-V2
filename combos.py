@@ -19,10 +19,10 @@ class Combos:
         self.success += 1
         self.remaining -= 1
 
-        print(f'Successful: {self.success} | Failed: {self.failed}', end='\r')
+        print(f'Successful: {self.success} | Failed: {self.failed}    ', end='\r')
 
     def update_failed(self):
         self.failed += 1
         self.remaining -= 1
 
-        print(f'Successful: {self.success} | Failed: {self.failed}', end='\r')
+        print(f'Successful: {self.success} | Failed: {self.failed}    ', end='\r')

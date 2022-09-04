@@ -55,7 +55,7 @@ if __name__ == '__main__':
 
     if combos.combo_list:
         while c < len(combos.combo_list):
-            if threading.active_count() < 15:
+            if threading.active_count() < 3:
                 threading.Thread(target=account_sequence, args=(combos.combo_list[c],)).start()
 
                 c += 1

@@ -44,7 +44,7 @@ class Account(Session):
         res_json = res.json()
 
         try:
-            if res_json['dest']:
+            if res.status_code == 200:
                 res_cookies = res.cookies
 
                 loid = res_cookies.get('loid')
